@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>userService</artifactId>
+    <artifactId>auth-service</artifactId>
 
     <properties>
         <maven.compiler.source>24</maven.compiler.source>
