@@ -5,11 +5,11 @@ spring:
   application:
     name: api-gateway-service
   cloud:
-      gateway:
-        discovery:
-          locator:
-            enabled: true
-            lower-case-service-id: true
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
 
 eureka:
   client:
