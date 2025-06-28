@@ -19,7 +19,7 @@ public class AuthService {
         var user = new User();
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRole("USER");
+        user.setRole(request.role().getRole());
         userRepo.save(user);
         return new DTOs.AuthResponse(jwtService.generateToken(user));
     }

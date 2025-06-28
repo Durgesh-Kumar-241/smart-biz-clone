@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { isUserLoggedIn, useAuth } from '../context/AuthContext';
 import { signupUser } from '../api/auth';
 
 
@@ -10,6 +10,10 @@ const Signup = () => {
   const [role, setRole] = useState('CUSTOMER');
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  if(isUserLoggedIn()){
+      navigate('/dashboard');
+    }
 
   const handleSignup = async () => {
     try {

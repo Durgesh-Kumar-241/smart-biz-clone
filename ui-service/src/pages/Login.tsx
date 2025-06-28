@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { isUserLoggedIn, useAuth } from '../context/AuthContext';
 import { loginUser } from '../api/auth';
 
 
@@ -10,10 +10,14 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  if(isUserLoggedIn()){
+    navigate('/dashboard');
+  }
+
   const handleLogin = async () => {
     try {
-      const user = await loginUser(email, password);
-      login(user);
+      const token = await loginUser(email, password);
+      login(token);
       navigate('/dashboard');
     } catch (err) {
       alert('Login failed');
