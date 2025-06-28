@@ -20,6 +20,8 @@ main_module/
 ## ✅ Current Progress
 
 - ✅ `eureka-discovery-service` implemented and running on port `8761`
+- ✅ `api-gateway-service` implemented and running on port `80`
+- ✅ `auth-service` implemented and running on port `8081`, E-mail/passowrd based JWT authentication has been implemented
 - 🔧 Other services are planned and under development
 
 ## 🚀 Tech Stack
