@@ -23,3 +23,5 @@ logging:
   level:
     com.netflix.discovery: DEBUG
     org.springframework.cloud.netflix.eureka: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
