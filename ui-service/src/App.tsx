@@ -2,10 +2,11 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Signup from './pages/Signup';
 
-import Login from './pages/login';
+import Login from './pages/Login';
 import { useAuth } from './context/AuthContext';
 import SellerDashboard from './pages/SellerDashboard';
 import CustomerDashboard from './pages/CustomerDashboard';
+
 
 function App() {
   const { user } = useAuth();
@@ -27,4 +28,4 @@ function App() {
   );
 }
 
-export default App;
+export default App

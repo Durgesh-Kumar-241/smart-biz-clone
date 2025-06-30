@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isUserLoggedIn, useAuth } from '../context/AuthContext';
 import { loginUser } from '../api/auth';
+import { Button } from '@/components/ui/button';
 
 
 const Login = () => {
@@ -30,6 +31,9 @@ const Login = () => {
       <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
       <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" type="password" />
       <button onClick={handleLogin}>Login</button>
+      <div className="flex min-h-svh flex-col items-center justify-center">
+      <Button>Click me</Button>
+      </div>
     </div>
   );
 };
