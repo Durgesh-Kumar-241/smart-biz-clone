@@ -28,7 +28,7 @@ export function Login({
   const navigate = useNavigate();
 
   if(isUserLoggedIn()){
-    navigate('/dashboard');
+    navigate('/');
   }
 
 
@@ -36,7 +36,7 @@ export function Login({
     try {
       const token = await loginUser(email, password);
       login(token);
-      navigate('/dashboard');
+      navigate('/');
     } catch (err) {
       alert('Login failed');
     }

@@ -1,110 +1,152 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+// src/pages/Signup.tsx
 
-import { useState } from 'react';
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useNavigate } from 'react-router-dom';
 import { isUserLoggedIn, useAuth } from '../context/AuthContext';
 import { signupUser } from '../api/auth';
+import { useEffect } from "react";
 
 
 
-export function Signup({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+const formSchema = z
+    .object({
+        email: z.string().email("Invalid email"),
+        accountType: z.enum(["SELLER", "CUSTOMER"]),
+        password: z.string().min(6, "Password must be at least 6 characters"),
+        confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        path: ["confirmPassword"],
+        message: "Passwords do not match",
+    });
 
-  const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [password2, setPassword2] = useState('');
-    const [role, setRole] = useState('CUSTOMER');
+export type SignupFormData = z.infer<typeof formSchema>;
+
+export default function Signup() {
+
     const { login } = useAuth();
     const navigate = useNavigate();
-  
-    if(isUserLoggedIn()){
-        navigate('/dashboard');
-      }
-  
-    const handleSignup = async () => {
-      try {
-        if(password!==password2){
-          alert("Password and confirm password values dont match");
-          return;
+
+    useEffect(() => {
+        if (isUserLoggedIn()) {
+            navigate('/');
         }
-        const user = await signupUser(email, password, role);
-        login(user);
-        navigate('/dashboard');
-      } catch (err) {
-        alert('Signup failed');
-      }
+    }, [navigate]);
+
+
+    const form = useForm<SignupFormData>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: "",
+            accountType: "CUSTOMER",
+            password: "",
+            confirmPassword: "",
+        },
+    });
+
+    const onSubmit = (values: SignupFormData) => {
+        handleSignup(values);
     };
 
-  return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Create new account</CardTitle>
-              <CardDescription>
-                Enter your details below to create your account
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form>
-                <div className="flex flex-col gap-6">
-                  <div className="grid gap-3">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="m@example.com"
-                      required
-                      onChange={(e) => setEmail(e.target.value)}
+    const handleSignup = async (values: SignupFormData) => {
+        console.log("Signup values:", values);
+        try {
+            const user = await signupUser(values.email, values.password, values.accountType);
+            login(user);
+            navigate('/');
+        } catch (err) {
+            console.log(err);
+            alert('Signup failed');
+        }
+    }
+
+
+    return (
+        <div className="max-w-md mx-auto mt-10 p-6 border rounded-xl shadow-sm">
+            <h2 className="text-2xl font-bold mb-6 text-center">Create an Account</h2>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl><Input type="email" placeholder="you@example.com" {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
                     />
-                  </div>
 
-                  <div className="grid gap-3">
-                    <div className="flex items-center">
-                      <Label htmlFor="password2">Password</Label>
-                    </div>
-                    <Input id="password2" type="password" required onChange={(e)=> setPassword(e.target.value)}/>
-                  </div>
+                    <FormField
+                        control={form.control}
+                        name="accountType"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Account Type</FormLabel>
+                                <FormControl>
+                                    <RadioGroup
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                        className="flex gap-4"
+                                    >
+                                        <FormItem className="flex items-center space-x-2">
+                                            <RadioGroupItem value="CUSTOMER" id="customer" />
+                                            <Label htmlFor="customer">Customer</Label>
+                                        </FormItem>
+                                        <FormItem className="flex items-center space-x-2">
+                                            <RadioGroupItem value="SELLER" id="seller" />
+                                            <Label htmlFor="seller">Seller</Label>
+                                        </FormItem>
+                                    </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                  <div className="grid gap-3">
-                    <div className="flex items-center">
-                      <Label htmlFor="password">Confirm Password</Label>
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl><Input type="password" {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="confirmPassword"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Confirm Password</FormLabel>
+                                <FormControl><Input type="password" {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <Button type="submit" className="w-full">Sign Up</Button>
+
+                    <div className="mt-4 text-center text-sm">
+                        Already have an account? Login{" "}
+                        <a href="/login" className="underline underline-offset-4">
+                            here
+                        </a>
                     </div>
-                    <Input id="password" type="password" required onChange={(e)=> setPassword2(e.target.value)}/>
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    <Button type="submit" className="w-full" onClick={handleSignup}>
-                      Login
-                    </Button>
-                  </div>
-                </div>
-                <div className="mt-4 text-center text-sm">
-                  Already have an account?{" "}
-                  <a href="/login" className="underline underline-offset-4">
-                    Log in
-                  </a>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+                </form>
+            </Form>
         </div>
-      </div>
-    </div>
-
-  )
+    );
 }
-
-export default Signup;
