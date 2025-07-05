@@ -2,23 +2,26 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import axios from 'axios';
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 
 
-type Product = {
+export type Product = {
     id: string;
     title: string;
     category: string;
     price: number;
     description: string;
-    image: string;
 };
+
+const PRODUCT_SERVICE_API_BASE = "http://localhost/product-service/api/products";
+//const PRODUCT_SERVICE_API_BASE = "http://localhost:8083/api/products";
+
 
 export default function ManageProducts() {
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -31,7 +34,6 @@ export default function ManageProducts() {
         category: "",
         price: 0,
         description: "",
-        image: "",
     });
 
     const [images, setImages] = useState<File[]>([]);
@@ -42,36 +44,29 @@ export default function ManageProducts() {
     }, []);
 
     const fetchProducts = async () => {
-        const res = await fetch("/api/products/mine");
+        const res = await fetch(`${PRODUCT_SERVICE_API_BASE}`);
         const data = await res.json();
         setProducts(data);
     };
 
     const handleAdd = async () => {
         const formData = new FormData();
-        formData.append("title", newProduct.title);
-        formData.append("category", newProduct.category);
-        formData.append("price", String(newProduct.price));
-        formData.append("description", newProduct.description);
+        formData.append("product",JSON.stringify(newProduct));
 
         images.forEach((file, idx) => {
             formData.append("images", file); // assuming backend accepts "images" as array
         });
 
-        const res = await axios.post("/api/products", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
+        const res = await axios.post(`${PRODUCT_SERVICE_API_BASE}`, formData);
 
         await fetchProducts();
-        setNewProduct({ id: "", title: "", category: "", price: 0, description: "", image: "" });
+        setNewProduct({ id: "", title: "", category: "", price: 0, description: ""});
         setImages([]);
     };
 
 
     const handleDelete = async (id: string) => {
-        const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+        const res = await fetch(`${PRODUCT_SERVICE_API_BASE}/${id}`, { method: "DELETE" });
         if (res.ok) fetchProducts();
     };
 

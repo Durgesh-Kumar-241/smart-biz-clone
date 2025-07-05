@@ -1,5 +1,8 @@
-import ProductCard from "@/components/ui/ProductCard";
+import ProductCard, { type ProductDetail } from "@/components/ui/ProductCard";
+import { useEffect, useState } from "react";
+import type { Product } from "./ManageProducts";
 
+const PRODUCT_SERVICE_API_BASE = "http://localhost/product-service/api/products";
 
 const dummyProducts = [
   {
@@ -73,6 +76,18 @@ const dummyProducts = [
 ];
 
 export default function CustomerDashboard() {
+  const [products, setProducts] = useState<ProductDetail[]>([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    const res = await fetch(`${PRODUCT_SERVICE_API_BASE}`);
+    const data = await res.json();
+    setProducts(data);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 space-y-10 py-8">
       <div className="bg-yellow-100 p-6 text-center rounded-xl text-lg font-semibold">
@@ -82,7 +97,7 @@ export default function CustomerDashboard() {
       <section>
         <h2 className="text-xl font-bold mb-4">Featured Products</h2>
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          {dummyProducts.map((product) => (
+          {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
