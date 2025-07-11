@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  eureka-discovery-service:
+    image: eureka-discovery-service
+    container_name: eureka-discovery-service
+    ports:
+      - "8761:8761"
+    networks:
+      - shopnet
+
+  api-gateway-service:
+    image: api-gateway-service
+    container_name: api-gateway-service
+    ports:
+      - "80:80"
+    depends_on:
+      - eureka-discovery-service
+    networks:
+      - shopnet
+
+  auth-service:
+    image: auth-service
+    container_name: auth-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-discovery-service
+    networks:
+      - shopnet
+
+  user-service:
+    image: user-service
+    container_name: user-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka-discovery-service
+    networks:
+      - shopnet
+
+  product-service:
+    image: product-service
+    container_name: product-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka-discovery-service
+    networks:
+      - shopnet
+
+networks:
+  shopnet:
+    driver: bridge
