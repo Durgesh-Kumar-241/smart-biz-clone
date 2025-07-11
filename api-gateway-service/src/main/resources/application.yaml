@@ -8,10 +8,20 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
-          lower-case-service-id: true
-    default-filters:
-      - AddRequestHeader=X-Forwarded-Host, localhost
+          enabled: false
+      routes:
+        - id: auth
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+        - id: user
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+        - id: product
+          uri: lb://product-service
+          predicates:
+            - Path=/products/**
   webflux:
     multipart:
       enabled: false
@@ -19,7 +29,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://admin:admin123@localhost:8761/eureka/
+      defaultZone: http://admin:admin123@eureka-discovery-service:8761/eureka/
     fetch-registry: true
     register-with-eureka: true
 
