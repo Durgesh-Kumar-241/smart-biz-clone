@@ -1,21 +1,24 @@
-# Spring Boot Microservices Monorepo
+# ShopNow - Spring Boot Microservices E-Commerce Platform
 
-Hi,  
-This project intends to showcase my skills in **Java**, **Spring Boot**, and **Microservice Architecture** using a monorepo approach.
+A scalable e-commerce platform built using Spring Boot, Java 17, and microservices architecture.
+
+---
 
 ## 🏗️ Project Structure
 
 ```
-main_module/
-├── eureka-discovery-service     # Service registry using Netflix Eureka
-├── api-gateway-service          # Central API gateway (planned)
-├── auth-service                 # Authentication service (planned)
-├── user-service                 # User profile and management (planned)
-├── product-service              # Product catalog service (planned)
-├── order-service                # Order management service (planned)
+shopnow/
+├── eureka-discovery-service/
+├── api-gateway-service/
+├── auth-service/
+├── user-service/
+├── product-service/
+├── docker-compose.yml
+├── build-images.sh / .bat
+├── README.md
 ```
 
-> This project is organized as a **monorepo**, meaning all microservices are maintained within a single Git repository for easier coordination, sharing configurations, and unified CI/CD.
+---
 
 ## ✅ Current Progress
 
@@ -28,10 +31,11 @@ main_module/
 
 - Java 17
 - Spring Boot 3.x
-- Spring Cloud (2023.0.1)
-- Eureka Discovery Server
+- Spring Cloud Gateway & Eureka Discovery
+- Docker / Docker Compose
+- JWT Authentication
 - Maven (multi-module project)
-- (Planned) Spring Security, Spring Gateway, MySQL, Docker
+
 
 ## ⚙️ Getting Started
 
@@ -41,27 +45,90 @@ main_module/
 - Maven 3.8+
 - IntelliJ IDEA (recommended)
 
-### To Run Eureka Server:
+  ## 🚀 Project Branches
 
-1. Navigate to `eureka-discovery-service`:
-   ```bash
-   cd eureka-discovery-service
-   ```
+We maintain **two branches** for different ways to run the project:
 
-2. Run the application:
-   ```bash
-   mvn spring-boot:run
-   ```
+### 🔹 `non-docker-dev-build`
+> Ideal for developers running the app locally via Spring Boot
 
-3. Visit [http://localhost:8761](http://localhost:8761) to see the Eureka dashboard.
+- Services run via IntelliJ / VS Code / Maven CLI
+- Uses default `localhost`-based configuration
+- No Docker dependencies required
 
-> Optional: Eureka UI is secured using basic authentication (`admin` / `admin123`)
+### 🔹 `docker-build`
+> For running the project using Docker and Docker Compose
+
+- Each service has its own Dockerfile
+- Centralized `docker-compose.yml` to manage services
+- Uses service discovery via Docker network
+
+---
+
+## 🟢 How to Run the Project
+
+### ✅ Option 1: Run Without Docker (Branch: `non-docker-dev-build`)
+
+> Prerequisites: Java 17+, Maven
+
+```bash
+git clone -b non-docker-dev-build https://github.com/yourusername/shopnow.git
+cd shopnow
+mvn clean install -DskipTests
+```
+
+Start the services manually in this order:
+
+```bash
+# Run from your IDE or CLI:
+- eureka-discovery-service (port 8761)
+- api-gateway-service      (port 80)
+- auth-service             (port 8081)
+- user-service             (port 8082)
+- product-service          (port 8083)
+```
+
+Access:
+- Eureka: [http://localhost:8761](http://localhost:8761)
+- API Gateway: [http://localhost](http://localhost)
+
+---
+
+### ✅ Option 2: Run With Docker (Branch: `docker-build`)
+
+> Prerequisites: Docker Desktop
+
+```bash
+git clone -b docker-build https://github.com/yourusername/shopnow.git
+cd shopnow
+```
+
+Build Docker images:
+```bash
+./build-images.sh   # or build-images.bat on Windows
+```
+
+Start with Docker Compose:
+```bash
+docker compose up -d
+```
+
+Access:
+- Eureka: [http://localhost:8761](http://localhost:8761)
+- Gateway: [http://localhost](http://localhost)
+
+Stop:
+```bash
+docker compose down
+```
 
 ## 📌 Notes
 
-- This project will evolve to include inter-service communication, API Gateway, authentication & authorization, database integrations, and deployment automation.
-- A `docker-compose.yml` and CI/CD pipeline will be added later for full-stack simulation.
+- Eureka UI is secured using basic authentication (`admin` / `admin123`)
+
+---
 
 ## 📂 License
 
 This project is open source and available under the [MIT License](LICENSE).
+
