@@ -45,7 +45,7 @@ shopnow/
 - Maven 3.8+
 - IntelliJ IDEA (recommended)
 
-  ## 🚀 Project Branches
+## 🚀 Project Branches
 
 We maintain **two branches** for different ways to run the project:
 
