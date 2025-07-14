@@ -23,6 +23,8 @@ goto :eof
 echo.
 echo 🔧 Building %1 on port %2 ...
 docker build -t %1:latest --build-arg MODULE_NAME=%1 --build-arg EXPOSE_PORT=%2 .
+docker tag %1 kdurgesh029/%1:latest
+:: docker push kdurgesh029/%1:latest
 if %errorlevel% neq 0 (
     echo Failed to build Docker image for %1
     exit /b %errorlevel%
