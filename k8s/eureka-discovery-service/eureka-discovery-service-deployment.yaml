@@ -15,6 +15,7 @@ spec:
       containers:
         - name: eureka
           image: kdurgesh029/eureka-discovery-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8761
 ---

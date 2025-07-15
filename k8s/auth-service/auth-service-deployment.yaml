@@ -15,6 +15,7 @@ spec:
       containers:
         - name: auth-service
           image: kdurgesh029/auth-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8081
 ---

@@ -2,6 +2,7 @@ package com.dk.kumar.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,21 @@ public class FallbackController {
 
     @GetMapping("/auth-service")
     public ResponseEntity<String> authServiceFallback() {
+        return ResponseEntity.ok("Auth Service is currently unavailable. Please try again later.");
+    }
+
+    @PostMapping("/user-service")
+    public ResponseEntity<String> userServiceFallbackPost() {
+        return ResponseEntity.ok("User Service is currently unavailable. Please try again later.");
+    }
+
+    @PostMapping("/product-service")
+    public ResponseEntity<String> productServiceFallbackPost() {
+        return ResponseEntity.ok("Product Service is currently unavailable. Please try again later.");
+    }
+
+    @PostMapping("/auth-service")
+    public ResponseEntity<String> authServiceFallbackPost() {
         return ResponseEntity.ok("Auth Service is currently unavailable. Please try again later.");
     }
 
