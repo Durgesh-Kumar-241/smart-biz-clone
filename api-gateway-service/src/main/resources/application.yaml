@@ -2,13 +2,21 @@ server:
   port: 80
 
 spring:
+  web:
+    log-request-details: true
   application:
     name: api-gateway-service
   cloud:
     gateway:
+      default-filters:
+        - name: PreserveHostHeader
+        - name: RequestSize
+          args:
+            maxSize: 10MB
       discovery:
         locator:
-          enabled: false
+          enabled: true
+          lower-case-service-id: true
       routes:
         - id: auth
           uri: lb://auth-service
@@ -19,6 +27,7 @@ spring:
               args:
                 name: authServiceCircuitBreaker
                 fallbackUri: forward:/fallback/auth-service
+                timeoutDuration: 3000  # 3 seconds instead of 1
         - id: user
           uri: lb://user-service
           predicates:
@@ -28,6 +37,7 @@ spring:
               args:
                 name: userServiceCircuitBreaker
                 fallbackUri: forward:/fallback/user-service
+                timeoutDuration: 3000  # 3 seconds instead of 1
 
         - id: product
           uri: lb://product-service
@@ -38,6 +48,7 @@ spring:
               args:
                 name: productServiceCircuitBreaker
                 fallbackUri: forward:/fallback/product-service
+                timeoutDuration: 3000  # 3 seconds instead of 1
   webflux:
     multipart:
       enabled: false
@@ -56,3 +67,9 @@ logging:
     org.springframework.cloud.netflix.eureka: DEBUG
     org.springframework.cloud.gateway: DEBUG
     org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
+    root: DEBUG
+    org.springframework: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.cloud: DEBUG
+    reactor.netty: DEBUG
+    org.springframework.boot.autoconfigure: DEBUG

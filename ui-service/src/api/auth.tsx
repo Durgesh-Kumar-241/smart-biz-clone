@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:8081/auth-service/api/auth'; // your backend auth endpoint
+const API_BASE = 'http://localhost:30080/auth'; // your backend auth endpoint
 
 export const loginUser = async (email: string, password: string): Promise<string> => {
   const res = await axios.post(`${API_BASE}/login`, { email, password });
