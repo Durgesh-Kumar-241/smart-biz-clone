@@ -56,7 +56,7 @@ We maintain **two branches** for different ways to run the project:
 - Uses default `localhost`-based configuration
 - No Docker dependencies required
 
-### 🔹 `docker-build`
+### 🔹 `master`
 > For running the project using Docker and Docker Compose
 
 - Each service has its own Dockerfile
@@ -94,12 +94,12 @@ Access:
 
 ---
 
-### ✅ Option 2: Run With Docker (Branch: `docker-build`)
+### ✅ Option 2: Run With Docker (Branch: `master`)
 
 > Prerequisites: Docker Desktop
 
 ```bash
-git clone -b docker-build https://github.com/yourusername/shopnow.git
+git clone -b master https://github.com/yourusername/shopnow.git
 cd shopnow
 ```
 
