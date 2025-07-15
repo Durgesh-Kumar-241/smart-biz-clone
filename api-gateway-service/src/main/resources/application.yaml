@@ -8,11 +8,11 @@ spring:
     name: api-gateway-service
   cloud:
     gateway:
-      default-filters:
-        - name: PreserveHostHeader
-        - name: RequestSize
-          args:
-            maxSize: 10MB
+#      default-filters:
+#        - name: PreserveHostHeader
+#        - name: RequestSize
+#          args:
+#            maxSize: 10MB
       discovery:
         locator:
           enabled: true
@@ -67,9 +67,9 @@ logging:
     org.springframework.cloud.netflix.eureka: DEBUG
     org.springframework.cloud.gateway: DEBUG
     org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
-    root: DEBUG
-    org.springframework: DEBUG
-    org.springframework.web: DEBUG
-    org.springframework.cloud: DEBUG
-    reactor.netty: DEBUG
-    org.springframework.boot.autoconfigure: DEBUG
+#    root: DEBUG
+#    org.springframework: DEBUG
+#    org.springframework.web: DEBUG
+#    org.springframework.cloud: DEBUG
+#    reactor.netty: DEBUG
+#    org.springframework.boot.autoconfigure: DEBUG
