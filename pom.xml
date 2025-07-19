@@ -17,9 +17,6 @@
     </parent>
 
     <modules>
-
-
-        <module>user-service</module>
         <module>auth-service</module>
         <module>eureka-discovery-service</module>
         <module>api-gateway-service</module>
