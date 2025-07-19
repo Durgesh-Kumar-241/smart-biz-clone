@@ -1,79 +1,11 @@
 import ProductCard, { type ProductDetail } from "@/components/ui/ProductCard";
 import { useEffect, useState } from "react";
 import type { Product } from "./ManageProducts";
+import { dashboardProducts } from "@/dummy_data/dummy_data";
 
 const PRODUCT_SERVICE_API_BASE = "http://localhost/product-service/api/products";
 
-const dummyProducts = [
-  {
-    id: "1",
-    title: "Smartphone XYZ",
-    category: "Electronics",
-    price: 19999,
-    description: "Feature-rich smartphone with great performance.",
-    images: [
-      "https://placehold.co/300x300?text=Front",
-      "https://placehold.co/300x300?text=Back",
-      "https://placehold.co/300x300?text=Side",
-    ],
-    rating: 4,
-    reviews: [
-      { name: "Alice", rating: 5, comment: "Amazing performance!" },
-      { name: "Bob", rating: 4, comment: "Good value for money." },
-    ],
-  },
-  {
-    id: "2",
-    title: "Laptop XYZ",
-    category: "Electronics",
-    price: 19999,
-    description: "Feature-rich smartphone with great performance.",
-    images: [
-      "https://placehold.co/300x300?text=Front",
-      "https://placehold.co/300x300?text=Back",
-      "https://placehold.co/300x300?text=Side",
-    ],
-    rating: 4,
-    reviews: [
-      { name: "Alice", rating: 5, comment: "Amazing performance!" },
-      { name: "Bob", rating: 4, comment: "Good value for money." },
-    ],
-  },
-  {
-    id: "3",
-    title: "Item XYZ",
-    category: "Electronics",
-    price: 19999,
-    description: "Feature-rich smartphone with great performance.",
-    images: [
-      "https://placehold.co/300x300?text=Front",
-      "https://placehold.co/300x300?text=Back",
-      "https://placehold.co/300x300?text=Side",
-    ],
-    rating: 4,
-    reviews: [
-      { name: "Alice", rating: 5, comment: "Amazing performance!" },
-      { name: "Bob", rating: 4, comment: "Good value for money." },
-    ],
-  },
-  {
-    id: "4",
-    title: "Iphone XYZ",
-    category: "Electronics",
-    price: 19999,
-    description: "Feature-rich smartphone with great performance.",
-    images: [
-      "https://placehold.co/300x300?text=Front",
-      "https://placehold.co/300x300?text=Back",
-      "https://placehold.co/300x300?text=Side",
-    ],
-    rating: 4,
-    reviews: [
-      { name: "Alice", rating: 5, comment: "Amazing performance!" },
-      { name: "Bob", rating: 4, comment: "Good value for money." },
-    ],
-  }
-];
+const dummyProd = dashboardProducts;
 
 export default function CustomerDashboard() {
   const [products, setProducts] = useState<ProductDetail[]>([]);
@@ -96,7 +28,7 @@ export default function CustomerDashboard() {
 
       <section>
         <h2 className="text-xl font-bold mb-4">Featured Products</h2>
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+        <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
