@@ -9,7 +9,6 @@ echo ===== Building Docker images =====
 call :build_image eureka-discovery-service 8761
 call :build_image api-gateway-service 80
 call :build_image auth-service 8081
-call :build_image user-service 8082
 call :build_image product-service 8083
 
 
